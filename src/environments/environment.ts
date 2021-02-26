@@ -6,13 +6,13 @@ export const environment = {
   production: false,
   // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   firebaseConfig: {
-    apiKey: "AIzaSyCOh2uOtY7rp_0gGGb7gVfsPOWvJO-nl3w",
-    authDomain: "rebelschool-5e070.firebaseapp.com",
-    projectId: "rebelschool-5e070",
-    storageBucket: "rebelschool-5e070.appspot.com",
-    messagingSenderId: "89390568889",
-    appId: "1:89390568889:web:be2a42d97758a6a80e9268",
-    measurementId: "G-WF21CQ2Y0N"
+    apiKey: "AIzaSyBA840zE9QwMa39_rikej-wWzmQtTuKQH4",
+  authDomain: "aleprojeto01.firebaseapp.com",
+  projectId: "aleprojeto01",
+  storageBucket: "aleprojeto01.appspot.com",
+  messagingSenderId: "906560530590",
+  appId: "1:906560530590:web:c286080ba14cca4e0ff38f",
+  measurementId: "G-H84L0TDVPG"
   }
 };
 

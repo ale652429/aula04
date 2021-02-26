@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { User } from "../models/user";
 import { AngularFirestore } from "@angular/fire/firestore";
+import { EmailValidator } from "@angular/forms";
+import { getAllLifecycleHooks } from "@angular/compiler/src/lifecycle_reflector";
 
 @Injectable({
   providedIn: "root"
@@ -18,6 +20,30 @@ export class UserServiceService {
   }
 
   add(usuario:User){
-    return this.firedb.collection<User>("usuarios").add(usuario)
-  }
+    return this.firedb.collection<User>("usuarios").add(
+  {
+
+      nome : usuario.nome,
+      email: usuario.email,
+      bairro: usuario.bairro,
+      cep: usuario.cep,
+      logradouro : usuario.logradouro,
+      localidade: usuario.localidade,
+      uf: usuario.uf,
+      complemento:usuario.complemento,
+      numero: usuario.numero,
+      senha: usuario.senha,
+      erro: usuario.erro
+
+
+
+   }
+  )
+ 
+}
+
+getAll(){
+  return this.firedb.collection<User>("usuarios").valueChanges()
+
+ }
 }
