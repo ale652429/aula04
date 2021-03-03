@@ -19,9 +19,10 @@ export class UserListPage implements OnInit {
   ngOnInit() {
     this.userService.getAll().subscribe(
       res=>{
-
+this.users = res;
+console.log(this.users);
       },
-        erro =>{
+       erro =>{
       }
     )
   }
