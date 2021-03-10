@@ -3,6 +3,7 @@ import { User } from '../../models/user';
 import { Storage } from '@ionic/storage';
 import { UserServiceService } from '../../services/user-service.service';
 import { MgService } from '../../services/mg.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-add',
@@ -13,15 +14,33 @@ import { MgService } from '../../services/mg.service';
 export class UserAddPage implements OnInit {
 
   user: User = new User();
+key:string=null;
 
   constructor(
     private storage: Storage,
     // public alertController: AlertController,
-    private userService: UserServiceService,    // public toastController: ToastController,
-    protected msg:MgService
+    private userService: UserServiceService,   
+    // public toastController: ToastController,
+    protected msg:MgService,
+    private router:Router,
+    private activadeRouter:ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.key = this.activadeRouter.snapshot.paramMap.get('key');
+    if (this.key){
+      this.userService.get(this.key).subscribe(
+        res=>{
+          this.user = res
+        
+        },
+        erro=>{
+          console.log("Erro:", erro);
+          
+        }
+        
+      )
+    }
   }
 
   buscaCEP() {
@@ -50,30 +69,29 @@ export class UserAddPage implements OnInit {
     try {
       this.userService.add(this.user).then(
         res =>{
-          console.log('Dados Salvos firebase...', this.user);
+          console.log('Dados Salvos firebase...', res);
+          this.storage.set('nome', this.user.nome);
+          this.storage.set('email', this.user.email);
+          this.storage.set('senha', this.user.senha);
+          console.log('Dados Salvos...', this.user);
+          this.msg.dismissedLoding();
+          this.msg.presentAlert('Alerta','Usuário Cadastrado.');
+          this.user = new User();
+          this.router.navigate(['']);
+           
         },
         erro =>{
           console.log('Erro...',erro);
+          this.msg.dismissedLoding();
+          this.msg.presentAlert('Alerta','Usuário Cadastrado.');
         }
-      )
-      ;
-      this.storage.set('nome', this.user.nome);
-      this.storage.set('email', this.user.email);
-      this.storage.set('senha', this.user.senha);
-      console.log('Dados Salvos...', this.user);
-      this.msg.presentAlert('Alerta','Usuário Cadastrado.');
+      ) 
     } catch (error) {
       console.error("Erro ao salvar.", error);
+      this.msg.dismissedLoding();
       this.msg.presentAlert("Erro","Não Foi possivel salvar.");
     }
 
   }
-  // //async presentToast(texto: string) {
-  //   const toast = await this.toastController.create({
-  //     message: texto,
-  //     duration: 2000
-  //   });
-  //   toast.present();
-  // }
-
+  
 }

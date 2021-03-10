@@ -4,6 +4,8 @@ import { User } from "../models/user";
 import { AngularFirestore } from "@angular/fire/firestore";
 import { EmailValidator } from "@angular/forms";
 import { getAllLifecycleHooks } from "@angular/compiler/src/lifecycle_reflector";
+import { map } from 'rxjs/operators';
+import { Key } from "selenium-webdriver";
 
 @Injectable({
   providedIn: "root"
@@ -43,7 +45,27 @@ export class UserServiceService {
 }
 
 getAll(){
-  return this.firedb.collection<User>("usuarios").valueChanges()
+  //return this.firedb.collection<User>("usuarios").valueChanges()
+  return this.firedb.collection<User>("usuarios").stateChanges()
+  .pipe(
+    map(dados =>
+       dados.map(
+         d =>
+         ({
+           key: d.payload.doc.id, ...d.payload.doc.data()
+         })
 
- }
+
+     )
+  
+  
+   )
+       
+ )
+        }
+  get(Key){
+    return this.firedb.collection<User>("usuario").doc(Key).valueChanges();
+  }
+
+  
 }
